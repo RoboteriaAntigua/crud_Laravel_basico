@@ -1,0 +1,60 @@
+------------------------- construccion del crud rapidito ---------------------------------------
+
+#1  Crear base de datos en mysql y poner credenciales en .env (mysql -> topo 123)
+
+#2  Todo en un comando:
+    php artisan make:model -Rmfscr
+    (Request migration factory seeder controller resources)
+    o mas fácil:
+    php artisan make:model productos --all
+
+#3 En el modelo productos decirle que tabla va a manejar y que columnas estan habilitadas:
+    protected $table= "productos";
+    protected $fillable = ["col1","col2",etc];
+
+#3 factory:
+    return [
+            'nombre' => fake()->name(),
+            'descripcion' =>fake()->text(),
+            'stock' => fake()->numberBetween(0,100)
+        ];
+
+#4 Seeder:
+    En DatabaseSeeder
+    Productos::factory(20)->create();
+    
+#5 migrar: php artisan migrate --seed
+    
+
+#6 Rutas (buscar forma masiva):
+Route::controller(ProductosController::class)->group(function(){
+    Route::get('/', 'index')                        ->name('productos.index');
+    Route::get('productos/create','create')          ->name('productos.create');
+    Route::get('productos/{id}','show')              ->name('productos.show');
+    Route::post('productos/create/store','store')    ->name('productos.store');
+    Route::get('productos/edit/{id}','edit')         ->name('productos.edit');
+    Route::put('productos/{id}','update')            ->name('productos.update');
+    Route::put('productos/delete/{id}','destroy')        ->name('productos.destroy');
+});
+
+#7 Las vistas es lo que mas demora hacer un github para ellas
+
+#8 Los request para validacion
+
+#9 EL controlador:
+      index()                                 ->  $productos = Productos::all(); return view('index',['productos'=> $productos]);
+      create()                                ->  return view('create');
+      store(StoreProductosRequest $request)   ->  Productos::create($request->all()); return redirect()->route('productos.index');
+      show(string $id)                        ->  $producto = Productos::find($id); return view('show', ['producto'=>$producto]);
+      edit(string $id)                        -> $producto = Productos::find($id);   return view('edit', ['producto'=>$producto]);
+      update (Upd... $request, string $id)    ->  $actualizado = Productos::find($id); $actualizado->update($request->all()); return redirect()->route('productos.show',$actualizado->id);
+      destroy(string $id)                     -> $producto = Productos::find($id);  $producto->delete(); return redirect()->route('productos.index')->with('message','Eliminado satisfactoriamente');
+
+      En resumen:
+        index() -> Busca todos los productos, retorna vista index con parametro $productos
+        create() -> Solo retorna vista 'create' la cual es un form
+        store(par $req) -> crea una fila con el request entrante, redirije al indice o a show
+        show(id)    -> Muestra un item especifico, find y return vista 'show'
+        edit(id)    -> find(id) y retorna vista form 'edit' la cual tiene como action el metodo 'update'
+        update(...) -> metodo update y redirect a show o a index
+        destroy(id) -> find(id), delete y redirect.
