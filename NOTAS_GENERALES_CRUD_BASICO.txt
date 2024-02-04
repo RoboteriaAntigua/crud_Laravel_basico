@@ -3,7 +3,7 @@
 #1  Crear base de datos en mysql y poner credenciales en .env (mysql -> topo 123)
 
 #2  Todo en un comando:
-    php artisan make:model -Rmfscr
+    php artisan make:model productos -Rmfscr
     (Request migration factory seeder controller resources)
     o mas fácil:
     php artisan make:model productos --all
@@ -19,10 +19,12 @@
             'stock' => fake()->numberBetween(0,100)
         ];
 
-#4 Seeder:
-    En DatabaseSeeder
-    Productos::factory(20)->create();
-    
+    Seeder:
+        En DatabaseSeeder
+        Productos::factory(20)->create();
+
+#4 Migracion en create_productos_table
+
 #5 migrar: php artisan migrate --seed
     
 
@@ -39,7 +41,7 @@ Route::controller(ProductosController::class)->group(function(){
 
 #7 Las vistas es lo que mas demora hacer un github para ellas
 
-#8 Los request para validacion
+#8 Los request para validacion, recordar poner 'true'
 
 #9 EL controlador:
       index()                                 ->  $productos = Productos::all(); return view('index',['productos'=> $productos]);
