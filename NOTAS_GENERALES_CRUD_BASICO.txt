@@ -3,7 +3,7 @@
 #1  Crear base de datos en mysql y poner credenciales en .env (mysql -> topo 123)
 
 #2  Todo en un comando:
-    php artisan make:model productos -Rmfscr
+    php artisan make:model Productos -Rmfscr
     (Request migration factory seeder controller resources)
     o mas fácil:
     php artisan make:model productos --all

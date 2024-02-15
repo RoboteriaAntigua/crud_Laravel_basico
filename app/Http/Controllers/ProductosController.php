@@ -31,8 +31,8 @@ class ProductosController extends Controller
      */
     public function store(StoreProductosRequest $request)
     {
-        Productos::create($request->all());
-        return redirect()->route('productos.index');
+        $producto = Productos::create($request->all());
+        return redirect()->route('productos.show',["id"=>$producto->id])->with("message","creado exitosamente");
     }
 
     /**
@@ -61,7 +61,7 @@ class ProductosController extends Controller
     {
         $actualizado = Productos::find($id);
         $actualizado->update($request->all());
-        return redirect()->route('productos.show',$actualizado->id);
+        return redirect()->route('productos.show',$actualizado->id)->with("message","actualizado correctamente");
     }
 
     /**

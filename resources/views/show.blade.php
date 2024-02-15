@@ -8,7 +8,7 @@
     @endif
 
       <p class="h5">Nombre:</p>
-      <p class="h6 mb-3">{{ $producto->name }}</p>
+      <p class="h6 mb-3">{{ $producto->nombre }}</p>
 
       <p class="h5">Precio:</p>
       <p class="h6 mb-3">{{ $producto->precio }}</p>
